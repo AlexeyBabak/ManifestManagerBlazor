@@ -1,0 +1,71 @@
+﻿@page "/manifestmanager"
+
+<h3>Manifest Manager</h3>
+
+<div class="table-responsive border rounded shadow-sm">
+    <table class="table table-striped">
+        <thead class="text-primary shadow-sm">
+            <tr>
+                <th>Manifest #</th>
+                <th>AWB #</th>
+                <th>Containers</th>
+                <th>Packages</th>
+                <th>Created<br></th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var manifest in manifests)
+            {
+                <tr>
+                    <td><a href="@($"/details/{manifest.ManifestNumber}")" class="nav-link">@manifest.ManifestNumber</a></td>
+                    <td>@manifest.AWBNumber</td>
+                    <td>@manifest.ContainerNumber</td>
+                    <td>@manifest.PackageNumber</td>
+                    <td>@manifest.CreatedDate</td>
+                    <td>@manifest.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<Manifest> manifests;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        manifests = new List<Manifest>();
+        manifests.Add(new Manifest 
+        {
+            ManifestNumber = "202111050001",
+            AWBNumber = "027-28933334",
+            ContainerNumber = 56,
+            PackageNumber = 780,
+            CreatedDate = DateTime.Now,
+            Status = "Void"
+        });
+        manifests.Add(new Manifest
+        {
+            ManifestNumber = "202111050002",
+            AWBNumber = "027-28933335",
+            ContainerNumber = 21,
+            PackageNumber = 321,
+            CreatedDate = DateTime.Now,
+            Status = "Submitted"
+        });
+
+    }
+
+    public class Manifest
+    {
+        public string ManifestNumber { get; set; }
+        public string AWBNumber { get; set; }
+        public int ContainerNumber { get; set; }
+        public int PackageNumber { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string Status { get; set; }
+    }
+}

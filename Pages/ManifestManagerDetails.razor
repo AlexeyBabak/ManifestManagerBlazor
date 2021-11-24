@@ -1,0 +1,174 @@
+﻿@page "/details/{Id}"
+
+<h3>Manifest Details</h3>
+<p>
+
+</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-xl-8 offset-xl-2" style="height: 259px;width: 1387px;padding: 10px;">
+            <div class="card">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-center text-primary mb-0">Manifest Datails<br></h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-center text-muted card-subtitle mb-2">Manifest #&nbsp;<a>@manifest.ManifestNumber</a><br></h5>
+                        <div class="row">
+                            <div class="col">
+                                <p class="text-center"><strong>AWB:</strong>&nbsp;@manifest.AWBNumber<br><strong>Created Date:</strong>&nbsp;@manifest.CreatedDate<br><strong>Status:</strong>&nbsp;@manifest.Status<br></p>
+                            </div>
+                            <div class="col">
+                                <p class="text-center"><strong>Containers:&nbsp;</strong>@manifest.ContainerNumber<br><strong>Packages:&nbsp;</strong>@manifest.PackageNumber<br></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive text-center border rounded shadow-sm">
+                <table class="table table-striped table-hover">
+                    <thead class="text-center text-primary">
+                        <tr>
+                            <th>Level</th>
+                            <th>Package</th>
+                            <th>Type</th>
+                            <th>Weight</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Zip</th>
+                            <th>ETA Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in this.details)
+                        {
+                            <tr>
+                                <td>@detail.Level</td>
+                                <td>@detail.Package</td>
+                                <td>@detail.MType</td>
+                                <td>@detail.Weight</td>
+                                <td>@detail.Address</td>
+                                <td>@detail.City</td>
+                                <td>@detail.State</td>
+                                <td>@detail.Zip</td>
+                                <td>@detail.EtaDate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private Manifest manifest;
+    private IEnumerable<ManifestDetails> details;
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var manifests = new List<Manifest>();
+        manifests.Add(new Manifest
+        {
+            ManifestNumber = "202111050001",
+            AWBNumber = "027-28933334",
+            ContainerNumber = 56,
+            PackageNumber = 780,
+            CreatedDate = DateTime.Now,
+            Status = "Void"
+        });
+        manifests.Add(new Manifest
+        {
+            ManifestNumber = "202111050002",
+            AWBNumber = "027-28933335",
+            ContainerNumber = 21,
+            PackageNumber = 321,
+            CreatedDate = DateTime.Now,
+            Status = "Submitted"
+        });
+
+        var manifestsDetails = new List<ManifestDetails>();
+        manifestsDetails.Add(new ManifestDetails
+        {
+            ManifestNumberID = "202111050001",
+            Level = 1,
+            Package = "420917109261290237757383094148",
+            MType = "D",
+            Weight = 4.1689,
+            Address = "14310 RAMONA AVE",
+            City = "CHINO",
+            State = "CA",
+            Zip = "91710-5739",
+            EtaDate = DateTime.Now
+        });
+        manifestsDetails.Add(new ManifestDetails
+        {
+            ManifestNumberID = "202111050001",
+            Level = 1,
+            Package = "420917109261290237757383094149",
+            MType = "D",
+            Weight = 4.1689,
+            Address = "14310 RAMONA AVE",
+            City = "CHINO",
+            State = "CA",
+            Zip = "91710-5739",
+            EtaDate = DateTime.Now
+        });
+        manifestsDetails.Add(new ManifestDetails
+        {
+            ManifestNumberID = "202111050002",
+            Level = 2,
+            Package = "420894319261290237757383094209",
+            MType = "D",
+            Weight = 1.1289,
+            Address = "ISLAND DR",
+            City = "FORK",
+            State = "CA",
+            Zip = "91710-5739",
+            EtaDate = DateTime.Now
+        });
+
+        manifest = manifests.FirstOrDefault(x => x.ManifestNumber == this.Id);
+        details = manifestsDetails.Where(x => x.ManifestNumberID == this.Id);
+    }
+
+    public class Manifest
+    {
+        public string ManifestNumber { get; set; }
+        public string AWBNumber { get; set; }
+        public int ContainerNumber { get; set; }
+        public int PackageNumber { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string Status { get; set; }
+    }
+
+    public class ManifestDetails
+    {
+        public string ManifestNumberID { get; set; }
+        public int Level { get; set; }
+        public string Package { get; set; }
+        public string MType { get; set; }
+        public double Weight { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public DateTime EtaDate { get; set; }
+    }
+}
